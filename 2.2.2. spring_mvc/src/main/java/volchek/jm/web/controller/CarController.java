@@ -1,21 +1,25 @@
-package web.controller;
+package volchek.jm.web.controller;
 
-import model.Car;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import volchek.jm.model.Car;
+import volchek.jm.service.CarService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class CarController {
 
+    @Autowired
+    private CarService carService;
+
     @GetMapping("/cars")
     public String getCar(@RequestParam(value = "count", required = false, defaultValue = "5") Integer count,
-                         ModelMap model) {
+                         Model model) {
 
         List<Car> cars = new ArrayList<>();
         cars.add(new Car("BMW", 1, "black"));
@@ -23,7 +27,7 @@ public class CarController {
         cars.add(new Car("Mercedes",3, "white"));
         cars.add(new Car("Toyota", 4, "yellow"));
         cars.add(new Car("Mitsubishi", 5, "red"));
-        model.addAttribute("cars", cars.stream().limit(count).collect(Collectors.toList()));
+        model.addAttribute("cars", carService.getCar(cars, count));
 
         return "cars";
     }

@@ -1,4 +1,4 @@
-package model;
+package volchek.jm.model;
 
 public class Car {
 
